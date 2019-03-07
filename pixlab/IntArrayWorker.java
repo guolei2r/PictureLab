@@ -78,7 +78,6 @@ public class IntArrayWorker
     System.out.println();
   }
   
-  
   /** 
    * fill the array with a pattern
    */
@@ -98,6 +97,7 @@ public class IntArrayWorker
       }
     }
   }
+  
  public int getCount(int n){
      int count=0;
      for (int[] row : matrix)
@@ -108,6 +108,7 @@ public class IntArrayWorker
         }
         return count;
  }
+ 
   public int getLargest()
   {
     int largest = 0;
@@ -120,6 +121,7 @@ public class IntArrayWorker
     }
     return largest;
  }
+ 
  public int getColTotal(int col)
   {
     int total = 0;
