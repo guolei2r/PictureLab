@@ -84,29 +84,36 @@ public class PictureTester
     seagull.mirrorGull();
     seagull.explore();
   }
-
-  /** Method to test the collage method */
+  
+    /** Method to test the collage method */
   public static void testCollage()
   {
     Picture canvas = new Picture("640x480.jpg");
-    canvas.myCollage();
+    canvas.createCollage();
     canvas.explore();
   }
   
+  public static void testmyCollage()
+  {
+        Picture canvas = new Picture("640x480.jpg");
+    canvas.createCollage();
+    canvas.explore();
+  }
   
-    public static void testCopy()
+  public static void testCopy()
   {
     Picture canvas = new Picture("640x480.jpg");
-    canvas.myCollage();
+    canvas.createCollage();
     canvas.explore();
   }
-  
+
+
   
   /** Method to test edgeDetection */
   public static void testEdgeDetection()
   {
     Picture swan = new Picture("swan.jpg");
-    swan.edgeDetection(10);
+    swan.edgeDetection(27);
     swan.explore();
   }
   

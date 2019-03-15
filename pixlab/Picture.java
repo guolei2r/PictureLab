@@ -152,6 +152,24 @@ public class Picture extends SimplePicture
    } 
   }
   
+    public void invert()
+  {
+      Pixel[][] pixels = this.getPixels2D();
+      for (int row = 0; row < pixels.length; row++)
+      {
+          for (int col = 0; col < pixels[0].length; col++)
+          {
+              int red = 255 - pixels[row][col].getRed();
+              int green = 255 - pixels[row][col].getGreen();
+              int blue = 255 - pixels[row][col].getBlue();
+              
+              Color newColor = new Color(red, green, blue);
+              
+              pixels[row][col].setColor(newColor);
+          }
+      }
+  }
+  
   /** Method that mirrors the picture around a 
     * vertical mirror in the center of the picture
     * from left to right */
@@ -312,7 +330,6 @@ public class Picture extends SimplePicture
       }
     }
   }
-  
   /** copy from the passed fromPic to the
     * specified startRow and startCol in the
     * current picture
@@ -340,51 +357,82 @@ public class Picture extends SimplePicture
         fromPixel = fromPixels[fromRow][fromCol];
         toPixel = toPixels[toRow][toCol];
         toPixel.setColor(fromPixel.getColor());
+         System.out.println("Fromrow " + fromRow + 
+        " toRow " + toRow + " fromCol" + fromCol + " toCol " + toCol);
       }
     }   
   }
   
-   public void copy(Picture fromPic, 
-                 int startRow, int startCol,
-                 int fSR,      int fSC,
-                 int fER,      int fEC)
+     public void copy2(Picture fromPic, int startRow, int endRow, int startCol, int endCol)
   {
     Pixel fromPixel = null;
     Pixel toPixel = null;
     Pixel[][] toPixels = this.getPixels2D();
     Pixel[][] fromPixels = fromPic.getPixels2D();
-    for (int fromRow = fSR, toRow = startRow; 
-         fromRow < fER &&
-         toRow < toPixels.length; 
+    for (int fromRow = 0, toRow = startRow; 
+         fromRow < fromPixels.length &&
+         toRow < endRow;
          fromRow++, toRow++)
     {
-      for (int fromCol = fSC, toCol = startCol; 
-           fromCol < fEC &&
-           toCol < toPixels[0].length;  
+      for (int fromCol = 0, toCol = startCol; 
+           fromCol < fromPixels[0].length &&
+           toCol < endCol;  
            fromCol++, toCol++)
       {
         fromPixel = fromPixels[fromRow][fromCol];
         toPixel = toPixels[toRow][toCol];
         toPixel.setColor(fromPixel.getColor());
+        //System.out.println("Fromrow " + fromRow + " toRow " + toRow + " fromCol" + fromCol + " toCol " + toCol);
+        //System.out.println(fromPixels[0].length);
       }
-    }   
+    } 
   }
  
   /** Method to create a collage of several pictures */
-  public void myCollage()
+  public void createCollage()
   {
     Picture flower1 = new Picture("flower1.jpg");
     Picture flower2 = new Picture("flower2.jpg");
-    this.copy(flower1,0,0);
-    this.copy(flower2,100,0);
-    this.copy(flower1,200,0);
+   
+    //this.copy(flower1,100,0);
+    this.copy2(flower1,0,100, 0, 100);
+    //flower1.explore();
+    //this.copy(flower1,200,0);
+    // Mirroring
+    int mirrorPoint = 98;
+    Pixel rightPixel = null;
+    Pixel leftPixel = null;
+    Pixel[][] pixels = this.getPixels2D();   
+    for (int row = 0; row < 98; row++)
+    {
+      for (int col = 0; col < 88; col++)
+      {
+        rightPixel = pixels[row][col];      
+        leftPixel = pixels[mirrorPoint - row + mirrorPoint][col];
+        leftPixel.setColor(rightPixel.getColor());
+      }
+    }
     Picture flowerNoBlue = new Picture(flower2);
     flowerNoBlue.zeroBlue();
-    this.copy(flowerNoBlue,300,0);
-    this.copy(flower1,400,0);
-    this.copy(flower2,500,0);
-    this.mirrorHorizontalBotToTop();
+    this.copy2(flowerNoBlue,300,350,80,500);
+    
+    Picture flowerinverse = new Picture(flower2);
+    flowerinverse.mirrorVertical();
+    this.copy2(flowerinverse, 100, 300, 80, 300);
+    //this.copy(flowerNoBlue,300,0);
+    //this.copy(flower1,400,0);
+    //this.copy(flower2,500,0);
+    //this.mirrorVertical();
+   
+    
     this.write("collage.jpg");
+  }
+  
+    public void myCollage()
+  {
+      Picture flower1 = new Picture("flower1.jpg");
+      this.copy2(flower1,10,20, 0, 100);
+      this.write("mycollage.jpg");
   }
     
   /** Method to show large changes in color 
